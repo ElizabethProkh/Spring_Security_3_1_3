@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>get user with id</title>
+</head>
+<body>
+
+<h1>Welcome, <span th:text="${user.username}"></span>!</h1>
+<p>Your surname is <span th:text="${user.surname}"></span></p>
+<p>Your department is <span th:text="${user.department}"></span></p>
+<br/>
+<br/>
+
+<a href="/logout">Logout</a>
+
+</body>
+</html>
