@@ -67,22 +67,12 @@
                                 <label for="department"><b>department</b></label>
                                 <input th:name="department" th:type="text" class="form-control" id="department"/>
                                 <br>
-<!--                                <label for="password"><b>Password</b></label>-->
-<!--                                <input th:name="password" th:field="*{password}" th:type="password" class="form-control"-->
-<!--                                       id="password"/>-->
-<!--                                <br>-->
                                 <label for="role"><b>Role</b></label>
                                 <select class="form-control" id="role" name="role" required>
                                     <option th:each="role: ${roles}" th:value="${role.name}">
                                         <th:block th:text="${role.name}"></th:block>
                                     </option>
                                 </select>
-<!--                                <select multiple class="form-control form-control-sm" id="roles" name="roles" size="2" required>-->
-<!--                                    <option th:each="role: ${roles}" th:value="${role.name}" th:selected="${user.roles.contains(role)}">-->
-<!--                                        <th:block th:text="${role.name}">-->
-<!--                                        </th:block>-->
-<!--                                    </option>-->
-<!--                                </select>-->
                                 <br>
                                 <button th:type="submit" class="btn btn-success btn-lg" value="Add new user">Add new user
                                 </button>
