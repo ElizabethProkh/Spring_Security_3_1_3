@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.kata.spring.boot_security.demo.Services.userDetailServiceImpl;
 
 
@@ -28,17 +29,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/", "/index/**","/auth/**").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                .anyRequest().authenticated()
-                .and()
-                .formLogin().successHandler(successUserHandler)
+        //конфигурируем авторизацию
+        http.formLogin()
+                .loginPage("/login") // указываем страницу с формой логина
+                .successHandler(successUserHandler) //указываем логику обработки при логине
+                .loginProcessingUrl("/login") // указываем action с формы логина
+                .usernameParameter("j_username")  // Указываем параметры логина и пароля с формы логина
+                .passwordParameter("j_password")
+                .permitAll(); // даем доступ к форме логина всем
+
+        http.logout()
+                // разрешаем делать логаут всем
                 .permitAll()
-                .and()
-                .logout()
-                .permitAll();
+                // указываем URL логаута
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                // указываем URL при удачном логауте
+                .logoutSuccessUrl("/login?logout")
+                //выклчаем кроссдоменную секьюрность (на этапе обучения неважна)
+                .and().csrf().disable();
+
+        http.authorizeRequests()
+                .antMatchers("/", "/index/**","/auth/**","/login").anonymous()
+                .antMatchers("/admin/**").access("hasRole('ADMIN')")
+                .antMatchers("/user/**").access("hasAnyRole('ADMIN', 'USER')")
+                .anyRequest().authenticated();
     }
 
     //настраивает аутентификацию
