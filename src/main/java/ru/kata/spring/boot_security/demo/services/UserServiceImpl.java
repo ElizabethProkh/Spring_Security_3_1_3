@@ -1,18 +1,16 @@
-package ru.kata.spring.boot_security.demo.Services;
+package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.Models.Role;
-import ru.kata.spring.boot_security.demo.Models.User;
-import ru.kata.spring.boot_security.demo.Repositories.RoleRepository;
-import ru.kata.spring.boot_security.demo.Repositories.UserRepository;
+import ru.kata.spring.boot_security.demo.models.Role;
+import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
+import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -41,7 +39,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
 
@@ -50,25 +47,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUser(User updatedUser, Long id) {
-        // Получаем существующего пользователя по id
-        User existingUser = userRepository.findById(updatedUser.getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-        // Обновляем поля пользователя
-        existingUser.setName(updatedUser.getName());
-        existingUser.setSurname(updatedUser.getSurname());
-        existingUser.setDepartment(updatedUser.getDepartment());
-        existingUser.setPassword(updatedUser.getPassword());
-
-        // Заменяем роли пользователя на новые роли
-        List<Role> newRoles = new ArrayList<>();
-        for (Role role : updatedUser.getRoles()) {
-            Role newRole = roleRepository.findByName(role.getName());
-            newRoles.add(newRole);
-        }
-        existingUser.setRoles(newRoles);
-
-        // Сохраняем обновленного пользователя в базе данных
-        userRepository.saveAndFlush(existingUser);
+        updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        userRepository.saveAndFlush(updatedUser);
     }
 
     @Override

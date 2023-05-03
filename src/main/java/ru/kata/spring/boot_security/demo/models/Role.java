@@ -1,9 +1,8 @@
-package ru.kata.spring.boot_security.demo.Models;
+package ru.kata.spring.boot_security.demo.models;
 
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import javax.print.DocFlavor;
 
 @Entity
 @Table(name = "roles")
@@ -52,10 +51,10 @@ public class Role implements GrantedAuthority {
     @Override
     public String toString() {
         String role = getName();
-        if(role.equals("ROLE_ADMIN")){
+        if (role.equals("ROLE_ADMIN")) {
             return "ADMIN";
         }
-        if (role.equals("ROLE_USER")){
+        if (role.equals("ROLE_USER")) {
             return "USER";
         }
         return role;

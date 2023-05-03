@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import ru.kata.spring.boot_security.demo.Services.userDetailServiceImpl;
+import ru.kata.spring.boot_security.demo.services.UserDetailServiceImpl;
 
 
 @Configuration
@@ -18,11 +18,11 @@ import ru.kata.spring.boot_security.demo.Services.userDetailServiceImpl;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SuccessUserHandler successUserHandler;
-    private final userDetailServiceImpl userDetailService;
+    private final UserDetailServiceImpl userDetailService;
 
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, userDetailServiceImpl userDetailService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailServiceImpl userDetailService) {
         this.successUserHandler = successUserHandler;
         this.userDetailService = userDetailService;
     }
@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/", "/index/**","/auth/**","/login").anonymous()
+                .antMatchers("/", "/index/**", "/auth/**", "/login").anonymous()
                 .antMatchers("/admin/**").access("hasRole('ADMIN')")
                 .antMatchers("/user/**").access("hasAnyRole('ADMIN', 'USER')")
                 .anyRequest().authenticated();
