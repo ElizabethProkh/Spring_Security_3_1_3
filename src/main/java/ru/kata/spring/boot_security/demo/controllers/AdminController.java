@@ -30,8 +30,7 @@ public class AdminController {
     public String showUsers(Model model, Authentication authentication) {
         model.addAttribute("allUsers", userService.getAllUsers());
         model.addAttribute("roles", roleService.getAllRoles());
-        User user = userService.findUserByName(authentication.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.findUserByName(authentication.getName()));
         model.addAttribute("newUser", new User());
         return "allUsers";
     }
@@ -39,12 +38,10 @@ public class AdminController {
 
     @GetMapping("/new")
     public String addNewUser(Model model, Authentication authentication) {
-        User newUser = new User();
-        newUser.setRoles(new HashSet<>());
+        User newUser = new User(new HashSet<>());
         model.addAttribute("newUser", newUser);
         model.addAttribute("roles", roleService.getAllRoles());
-        User user = userService.findUserByName(authentication.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.findUserByName(authentication.getName()));
         return "addNewUser";
     }
 
@@ -74,5 +71,4 @@ public class AdminController {
         userService.deleteUser(id);
         return "redirect:/admin";
     }
-
 }
