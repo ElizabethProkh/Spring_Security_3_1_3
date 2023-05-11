@@ -4,6 +4,7 @@ package ru.kata.spring.boot_security.demo.models;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -30,6 +31,20 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @Transient
+    private String newRole;
+
+    public String getNewRole() {
+        return newRole;
+    }
+
+    public void setNewRole(String newRole) {
+        this.newRole = newRole;
+    }
+
+    public User(String newRole) {
+        this.newRole = newRole;
+    }
 
     @Fetch(FetchMode.JOIN)
     @ManyToMany(fetch = FetchType.LAZY,
@@ -45,6 +60,14 @@ public class User implements UserDetails {
 
     public User(Long id, String name, String surname, String department, String password, Set<Role> roles) {
         this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.department = department;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(String name, String surname, String department, String password, Set<Role> roles) {
         this.name = name;
         this.surname = surname;
         this.department = department;

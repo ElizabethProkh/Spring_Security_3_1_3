@@ -1,11 +1,73 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:form="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ru">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
+<div class="container-fluid g-0">
+    <div class="row admin-header">
+        <div class="col admin-header_info d-flex">
+            <p><span class="admin-header_info_mail">[[${user.getName()}]]&#160</span>with roles: <span
+                    th:each="us1 : ${user.getRoles()}" th:text="${#strings.replace(us1.name, 'ROLE_', ' ')}"></span>
+            </p>
+        </div>
+        <div class="col admin-header_logout d-flex">
+            <a th:href="@{/logout}">Logout</a>
+        </div>
+    </div>
 
+    <div class="row g-0 admin-body">
+        <div class="col-2 admin-body_pages">
+            <div class="admin-body_pages_button" sec:authorize="hasRole('ROLE_ADMIN')">
+                <a th:href="@{/admin}">Admin</a>
+            </div>
+            <div class="admin-body_pages_button bactive" sec:authorize="isAuthenticated()">
+                <a th:href="@{/user}">User</a>
+            </div>
+        </div>
+        <div class="col-10 admin-body_info">
+            <h1 class="admin-body_info_title">
+                User information-page
+            </h1>
+            <div class="admin-body_info_tabs_tab">
+                <div class="admin-body_info_tabs_tab_content_title">
+                    <h2>About user</h2>
+                </div>
+                <div class="admin-body_info_tabs_tab_content">
+                    <table class="admin-body_info_tabs_tab_content_table table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Surname</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">Role</th>
+                        </tr>
+                        </thead>
+                        <tbody id="users">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script th:inline="javascript" src="../static/js/main.js" th:src="@{/js/main.js}">console.log([[${user.getId()}]])</script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        loadMyData();
+    });
+</script>
 </body>
 </html>

@@ -1,0 +1,164 @@
+h2 {
+    margin-bottom: 0px;
+}
+h4 {
+    margin: 0;
+    font-size: 18px;
+}
+p {
+    margin-bottom: 0px;
+}
+a {
+    text-decoration: none;
+    color: white;
+}
+
+div {
+    margin: 0;
+    padding: 0;
+}
+
+thead{
+
+}
+thead th{
+    padding-top: 15px!important;
+    padding-bottom: 15px!important;
+}
+
+tbody {
+    vertical-align: middle!important;
+}
+
+tbody td{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+
+.bactive {
+    color: white!important;
+    background-color: #007cff;
+    border-radius: 3px;
+}
+.bactive a{
+    color: white!important;
+}
+
+.admin-header {
+    background-color: #31373e;
+}
+
+.admin-header_info {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.admin-header_info p{
+    font-size: 20px;
+}
+
+.admin-header_info_mail {
+    margin-left: 20px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.admin-header_logout{
+    margin-right: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.admin-header_logout a{
+    color: darkgray;
+    text-decoration: none;
+}
+
+.admin-header p{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.admin-body_pages {
+    margin-top: 15px;
+    height: 100%!important;
+}
+.admin-body_pages_button {
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: #007cff!important;
+}
+.admin-body_pages_button a{
+    color: #007cff;
+}
+.admin-body_info {
+    background-color: #f8f9fa;
+    padding: 30px;
+    padding-top: 15px;
+}
+
+.admin-body_info_title {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+
+.admin-body_info_tabs_tab_content {
+    background-color: white;
+    padding: 25px;
+    border: 1px #dfdfdf solid;
+    border-top: 0;
+}
+.admin-body_info_tabs_tab_content_table {
+
+}
+
+.admin-body_info_tabs_tab_content_table thead{
+    border-top: 1px #dfdfdf solid;
+    border-bottom: 2px #dfdfdf solid!important;
+}
+
+.admin-body_info_tabs_tab_content_title {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border: #dfdfdf 1px solid;
+}
+.admin-body_info_tabs_tab_content_title h2{
+    font-size: 20px;
+}
+
+.admin-body_info_tabs_tab_content_formAdd{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.admin-body_info_tabs_tab_content_formAdd input{
+    height: 35px;
+    width: 300px!important;
+}
+.admin-body_info_tabs_tab_content_formAdd select{
+    width: 300px!important;
+}
+.admin-body_info_tabs_tab_content_formAdd h4{
+    margin-top: 15px;
+}
+.admin-body_info_tabs_tab_content_formAdd button{
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.admin-body_info_tabs_tab_content_formAdd_element{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.error{
+    color: red;
+    margin-top: 5px;
+}

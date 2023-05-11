@@ -32,7 +32,7 @@ public class AdminController {
         model.addAttribute("roles", roleService.getAllRoles());
         model.addAttribute("user", userService.findUserByName(authentication.getName()));
         model.addAttribute("newUser", new User());
-        return "allUsers";
+        return "admin";
     }
 
 

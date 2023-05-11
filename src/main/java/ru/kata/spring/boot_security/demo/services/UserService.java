@@ -9,11 +9,11 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    void addUser(User user);
+    User addUser(User user);
 
     Optional<User> getUserById(Long id);
 
-    void updateUser(User updatedUser, Long id);
+    User updateUser(User updatedUser, Long id);
 
     void deleteUser(Long id);
 
