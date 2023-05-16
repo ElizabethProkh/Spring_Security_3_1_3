@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+
 @RestController
 @RequestMapping("/api")
 public class MyRestController {
@@ -26,7 +27,8 @@ public class MyRestController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/userInfo")
+
+    @GetMapping("/user")
     public User getUserInfo(Principal principal) {
         User user = userService.findUserByName(principal.getName());
         return user;
@@ -54,17 +56,13 @@ public class MyRestController {
         return userService.addUser(user);
     }
 
+
     @PutMapping("/users")
     public User updateUser(@RequestBody User user) {
-        if (user.getNewRole() == null) {
-            user.setRoles(userService.getUserById(user.getId()).get().getRoles());
-            return userService.updateUser(user, user.getId());
-        } else {
-            Role role = roleService.findByName(user.getNewRole());
-            user.setRoles(Collections.singleton(role));
-            return userService.updateUser(user, user.getId());
-        }
+        User updatedUser = userService.updateUser(user, user.getId());
+        return updatedUser;
     }
+
 
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable Long id) {
@@ -73,5 +71,11 @@ public class MyRestController {
             throw new NoSuchUserException("There is no user with id: " + id + " in database");
         }
         userService.deleteUser(id);
+    }
+
+    @GetMapping("/roles")
+    public List<Role> getRoles (){
+        List<Role> roles = roleService.getAllRoles();
+        return roles;
     }
 }

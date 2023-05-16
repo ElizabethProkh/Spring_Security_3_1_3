@@ -13,9 +13,8 @@
 <div class="container-fluid g-0">
     <div class="row admin-header">
         <div class="col admin-header_info d-flex">
-            <p><span class="admin-header_info_mail">[[${user.getName()}]]&#160</span>with roles: <span
-                    th:each="us1 : ${user.getRoles()}" th:text="${#strings.replace(us1.name, 'ROLE_', ' ')}"></span>
-            </p>
+            <p><span class="admin-header_info_mail" id="userName"></span> with roles: <span id="userRoles"></span></p>
+
         </div>
         <div class="col admin-header_logout d-flex">
             <a th:href="@{/logout}">Logout</a>
@@ -59,7 +58,8 @@
     </div>
 </div>
 
-<script th:inline="javascript" src="../static/js/main.js" th:src="@{/js/main.js}">console.log([[${user.getId()}]])</script>
+<script th:inline="javascript" src="../static/js/main.js"
+        th:src="@{/js/main.js}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
@@ -67,7 +67,9 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         loadMyData();
+        loadUserData();
     });
 </script>
 </body>
 </html>
+

@@ -19,7 +19,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-
     //метод возвращает по имени пользователя самого юзера из базы данных
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
@@ -27,7 +26,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User '%s' not found", name));
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getRoles());
+        return user;
     }
 
 }

@@ -7,6 +7,7 @@ function getRoles(el){
     return res
 }
 
+
 function getUserFromForm(form){
     var user = {
         id: new FormData(form).get('id'),
@@ -38,7 +39,7 @@ function getUserById(id){
 }
 
 function loadMyData() {
-    $.ajax("/api/userInfo", {
+    $.ajax("/api/user", {
         method: "get",
         dataType: "json",
         success: function (msg) {
@@ -52,6 +53,18 @@ function loadMyData() {
         }
     })
 }
+
+function loadUserData() {
+    $.ajax("/api/user", {
+        method: "get",
+        dataType: "json",
+        success: function (user) {
+            $("#userName").text(user.name);
+            $("#userRoles").text(getRoles(user));
+        }
+    });
+}
+
 
 function loadUsersAdmin() {
     fetch("/api/users")
@@ -81,9 +94,48 @@ function loadUsersAdmin() {
                     .attr('data-bs-target', '#deleteModal')
                     .attr('data-bs-toggle', 'modal')
                     .val(el.id).appendTo(td)
-            })
+            });
+
+            loadRoles(); // Загрузка ролей после загрузки пользователей
         });
 }
+
+function loadRoles() {
+    fetch("api/roles")
+        .then((response) => {
+            return response.json();
+        })
+        .then((roles) => {
+            populateRolesDropdown(roles);
+            populateRolesDropdown2(roles);
+        })
+        .catch((error) => {
+            console.error("Failed to load roles: " + error);
+        });
+}
+
+function populateRolesDropdown(roles) {
+    var selectElement = $("#roleSelect");
+    selectElement.empty();
+    roles.forEach(function (role) {
+        var option = $("<option></option>")
+            .attr("value", role.name)
+            .text(role.name.replace('ROLE_', ''));
+        selectElement.append(option);
+    });
+}
+
+function populateRolesDropdown2(roles) {
+    var selectElement = $("#roleSelect2");
+    selectElement.empty();
+    roles.forEach(function (role) {
+        var option = $("<option></option>")
+            .attr("value", role.name)
+            .text(role.name.replace('ROLE_', ''));
+        selectElement.append(option);
+    });
+}
+
 
 function openAndFillModalUpdate(obj) {
     var id = obj.value
@@ -93,6 +145,7 @@ function openAndFillModalUpdate(obj) {
     $('#form-control_surname').val(user.surname)
     $('#form-control_department').val(user.department)
     $('#form-control_password').val(user.password)
+    $('#roleSelect2').val(getRoles(user))
 }
 function openAndFillModalDelete(obj) {
     var id = obj.value
@@ -102,6 +155,7 @@ function openAndFillModalDelete(obj) {
     $('#form-control_delete_surname').val(user.surname)
     $('#form-control_delete_department').val(user.department)
     $('#form-control_delete_password').val(user.password)
+    $('#form-control_delete_role').val(getRoles(user))
 }
 
 addUser.onsubmit = async (e) => {

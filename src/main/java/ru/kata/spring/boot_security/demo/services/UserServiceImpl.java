@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.exeptions.NoSuchUserException;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
@@ -47,9 +48,17 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User updateUser(User updatedUser, Long id) {
+        if (updatedUser.getNewRole() == null) {
+            User existingUser = getUserById(updatedUser.getId()).orElseThrow(() -> new NoSuchUserException("User not found"));
+            updatedUser.setRoles(existingUser.getRoles());
+        } else {
+            Role role = roleRepository.findByName(updatedUser.getNewRole());
+            updatedUser.setRoles(Collections.singleton(role));
+        }
         updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         return userRepository.saveAndFlush(updatedUser);
     }
+
 
     @Override
     @Transactional
