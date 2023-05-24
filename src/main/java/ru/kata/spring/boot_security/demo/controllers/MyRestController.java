@@ -1,6 +1,9 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.exeptions.NoSuchUserException;
 import ru.kata.spring.boot_security.demo.models.Role;
@@ -8,14 +11,14 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
-import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api")
+@Secured("ROLE_ADMIN")
+@RequestMapping("/api/admin")
 public class MyRestController {
 
     private final UserService userService;
@@ -27,12 +30,6 @@ public class MyRestController {
         this.roleService = roleService;
     }
 
-
-    @GetMapping("/user")
-    public User getUserInfo(Principal principal) {
-        User user = userService.findUserByName(principal.getName());
-        return user;
-    }
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
@@ -50,12 +47,16 @@ public class MyRestController {
     }
 
     @PostMapping("/users")
-    public User addNewUser(@RequestBody User user) {
-        Role role = roleService.findByName(user.getNewRole());
-        user.setRoles(Collections.singleton(role));
-        return userService.addUser(user);
+    public ResponseEntity<User> addNewUser(@RequestBody User user) {
+        Optional<User> oldUser = userService.getUserById(user.getId());
+        if (oldUser.isEmpty()) {
+            Role role = roleService.findByName(user.getNewRole());
+            user.setRoles(Collections.singleton(role));
+            return new ResponseEntity<>(userService.addUser(user), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
-
 
     @PutMapping("/users")
     public User updateUser(@RequestBody User user) {
@@ -74,7 +75,7 @@ public class MyRestController {
     }
 
     @GetMapping("/roles")
-    public List<Role> getRoles (){
+    public List<Role> getRoles() {
         List<Role> roles = roleService.getAllRoles();
         return roles;
     }

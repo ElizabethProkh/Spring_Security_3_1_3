@@ -21,7 +21,7 @@ function getUserFromForm(form){
 }
 
 function getUserById(id){
-    var msg = $.ajax("/api/users/" + id, {
+    var msg = $.ajax("/api/admin/users/" + id, {
         async:false,
         method: "get",
         dataType: "json"
@@ -67,7 +67,7 @@ function loadUserData() {
 
 
 function loadUsersAdmin() {
-    fetch("/api/users")
+    fetch("/api/admin/users")
         .then((response) => {
             return response.json();
         })
@@ -101,7 +101,7 @@ function loadUsersAdmin() {
 }
 
 function loadRoles() {
-    fetch("api/roles")
+    fetch("api/admin/roles")
         .then((response) => {
             return response.json();
         })
@@ -161,7 +161,7 @@ function openAndFillModalDelete(obj) {
 addUser.onsubmit = async (e) => {
     e.preventDefault();
     var user = getUserFromForm(addUser);
-    let response = await fetch('/api/users', {
+    let response = await fetch('/api/admin/users', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
@@ -183,7 +183,7 @@ editUser.onsubmit = async (e) => {
     e.preventDefault();
     var user = getUserFromForm(editUser);
     console.log(user)
-    let response = await fetch('/api/users/', {
+    let response = await fetch('/api/admin/users/', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
@@ -198,7 +198,7 @@ deleteUser.onsubmit = async (e) => {
     e.preventDefault();
     var user = getUserFromForm(deleteUser);
     console.log(user)
-    let response = await fetch('/api/users/' + user.id, {
+    let response = await fetch('/api/admin/users/' + user.id, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'

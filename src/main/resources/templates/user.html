@@ -23,7 +23,7 @@
 
     <div class="row g-0 admin-body">
         <div class="col-2 admin-body_pages">
-            <div class="admin-body_pages_button" sec:authorize="hasRole('ROLE_ADMIN')">
+            <div class="admin-body_pages_button" id="admin_block" style="display: none">
                 <a th:href="@{/admin}">Admin</a>
             </div>
             <div class="admin-body_pages_button bactive" sec:authorize="isAuthenticated()">
@@ -68,7 +68,21 @@
     document.addEventListener("DOMContentLoaded", function () {
         loadMyData();
         loadUserData();
+        fetch("/api/user")
+            .then(response => response.json())
+            .then(data => {
+                const role = getRoles(data);
+                console.log(222222222222222222)
+                console.log(role)
+                if (role === " ADMIN") {
+                    console.log(111111111111)
+                    document.getElementById("admin_block").style.display = 'block';
+                }
+            })
+            .catch(error => console.error(error));
     });
+
+
 </script>
 </body>
 </html>

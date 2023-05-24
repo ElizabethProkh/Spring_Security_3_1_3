@@ -48,14 +48,18 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User updateUser(User updatedUser, Long id) {
+        User existingUser = getUserById(updatedUser.getId()).orElseThrow(() -> new NoSuchUserException("User not found"));
         if (updatedUser.getNewRole() == null) {
-            User existingUser = getUserById(updatedUser.getId()).orElseThrow(() -> new NoSuchUserException("User not found"));
             updatedUser.setRoles(existingUser.getRoles());
         } else {
             Role role = roleRepository.findByName(updatedUser.getNewRole());
             updatedUser.setRoles(Collections.singleton(role));
         }
-        updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        if (!existingUser.getPassword().equals(updatedUser.getPassword())) {
+            updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        } else {
+            updatedUser.setPassword(existingUser.getPassword());
+        }
         return userRepository.saveAndFlush(updatedUser);
     }
 
